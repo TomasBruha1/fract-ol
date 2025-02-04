@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:17:58 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/04 11:50:42 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/04 17:37:45 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,18 @@
 
 // STRUCTS
 
+typedef struct s_fractal
+{
+	void	*mlx_cnct;
+	
+}			t_fractal;
+
+
 typedef struct s_complex
 {
 	double	real;
 	double	i;
-} t_complex;
+} 			t_complex;
 
 // FTS
 

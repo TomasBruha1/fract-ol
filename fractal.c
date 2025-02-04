@@ -6,14 +6,28 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/04 11:46:59 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/04 17:41:59 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
-// Check if I can use ft_printf for double.
-//
+// fractol struct and keep adding more if needed.
+// math_utils.c -> addition, squaring, escape value 4(Pythagoras)
+// Mandelbrot & Julia (different Julias with diff input values)
+// Mouse wheel zooms in & out almost infinitively.
+// Use diff colours for diff iterations of fractals.
+// Window management must be smooth (disable it??)
+// ESC and "X" must exit smoothly.
+// MiniLibX(MLX42) use of images is necessary.
+
+// BONUS:
+// More parameters from command line if needed.
+// Extra fractal (third)
+// Zoom follows the cursor (hook to center on cursor's position?)
+// Moving the view by pressing arrow keys. (similar to test "test")
+// Make the color range shift (ask Zuzi).
+// Change number of iterations with a + -.
 
 // FUNCTIONs
 // mlx_init() - initializes the connection to MLX.
@@ -30,9 +44,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_complex	z;
-	t_complex	c;
-	double 		tmp_real;
+	t_fractal	fractal;
 	
 	// Checks for correct arguments
 	if (!((argc == 2 && ft_strncmp(argv[1], "Mandelbrot", 11) == 0)
@@ -42,24 +54,13 @@ int	main(int argc, char **argv)
 		"\n     or\ttype \"Julia\", value 1 and value 2\n");
 		return (EXIT_FAILURE);
 	}
+	// Initialization of the MLX and the window stuff
+	init_fract(&fractal);
 	
-	z.real = 0;
-	z.i = 0;
-	c.real = 0.25;
-	c.i = 0.4;
-	
-	// General function for Mandelbrot z^2 + c
-	for (int i = 0; i < 42; ++i)
-	{
-		// z^2
-		tmp_real = (z.real * z.real) - (z.i * z.i);
-		z.i = 2 * z.real * z.i;
-		z.real = tmp_real;
-		// + c
-		z.real = z.real + c.real;
-		z.i = z.i + c.i;
-		printf("iteration %d, real: %f, imaginary %f\n", i, z.real, z.i);
-	}
+	// Rendering of the image
+
+
+	mlx_loop(fractal.mlx_cnct);
 	return (EXIT_SUCCESS);
 }
 
