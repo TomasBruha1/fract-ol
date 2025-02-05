@@ -6,9 +6,11 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/05 20:31:27 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:04:13 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "fractal.h"
 
 // DO NOW NOW: Fractal (Mandelbrot part) video by Oceano
 // DO NOW: add checks for init part for failing.
@@ -30,30 +32,34 @@
 // Make the color range shift (ask Zuzi).
 // Change number of iterations with a + -.
 
-
-#include "include/fractal.h"
-
-void	rndr_fract(t_fractal *fract)
-{
-	t_complex zz;
-	zz.real = fract->z.real;
-}
-
+// void	rndr_fract(t_fractal *fract)
+// {
+// 	t_complex zz;
+// 	zz.real = fract->z.real;
+// }
 
 // init for MLX, events, hooks data TODO
 void	init_fract(t_fractal *fract)
 {
 	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, "fractol", true);
-	// malloc error msg TODO 3x
-	fract->image = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
-	mlx_image_to_window(fract->mlx_cnct, fract->image, 0, 0);
+	if (fract->mlx_cnct == NULL)
+		error_msg_malloc();
+	fract->image->img_ptr = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
+	if (fract->image->img_ptr == NULL)
+		error_msg_malloc();
+	mlx_image_to_window(fract->mlx_cnct, fract->image->img_ptr, 0, 0);
+}
+
+static void	ft_hook(mlx_t *mlx)
+{
+	printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
 }
 
 int	main(int argc, char **argv)
 {
 	t_fractal	fractal;
 	
-	// Checks for correct arguments
+	// checks for correct arguments
 	if (!((argc == 2 && ft_strncmp(argv[1], "Mandelbrot", 11) == 0)
 	|| (argc == 4 && ft_strncmp(argv[1], "Julia", 6) == 0)))
 	{
@@ -61,13 +67,15 @@ int	main(int argc, char **argv)
 		"\n     or\ttype \"Julia\", value 1 and value 2\n");
 		return (EXIT_FAILURE);
 	}
-	// Initialization of the MLX and the window stuff
+	// initialization of the MLX and the image stuff
 	init_fract(&fractal);
 	
-	// Rendering of the image
+	// Rendering of the image, adding pixels.
+	//rndr_fract()
 
-
+	mlx_loop_hook(fractal.mlx_cnct, ft_hook, fractal.mlx_cnct);
 	mlx_loop(fractal.mlx_cnct);
+	mlx_terminate(fractal.mlx_cnct);
 	return (EXIT_SUCCESS);
 }
 

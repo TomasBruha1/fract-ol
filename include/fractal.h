@@ -6,15 +6,12 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 17:17:58 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/05 20:19:18 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/05 22:57:20 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTAL_H
 # define FRACTAL_H
-
-# define WIDTH 500
-# define HEIGHT 500
 
 // HEADERS
 
@@ -27,37 +24,44 @@
 # include "MLX42/MLX42_Int.h"
 # include "libft.h"
 
+// OTHER
+
+# define WIDTH 500
+# define HEIGHT 500
+
 // STRUCTS
 
+// real and imaginary values
 typedef struct s_complex
 {
 	double	real;
 	double	i;
 } 			t_complex;
 
-typedef struct s_image // TODO
+// pixels buffer
+typedef struct s_img
 {
-	void	*image;
-	
+	void	*img_ptr;
+	char	*pxls_ptr;
+	int		bite_per_pixel;
+	int		endian;
+	int		line_len;	
+}				t_img;
 
-
-	
-}			t_image;
-
+// core struct where I keep everything
 typedef struct s_fractal
 {
 	void		*mlx_cnct;
-	void		*image;
+	t_img		*image;
 	t_complex	z;
 	t_complex	c;
 	
 	
 }			t_fractal;
 
-
-
 // FTS
 
-// HELPER >> DELETE LATER
+// utils.c
+void    error_msg_malloc();
 
 #endif
