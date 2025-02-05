@@ -6,13 +6,13 @@
 #    By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 15:34:26 by tbruha            #+#    #+#              #
-#    Updated: 2025/02/03 13:00:12 by tbruha           ###   ########.fr        #
+#    Updated: 2025/02/05 19:18:15 by tbruha           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # future: CFLAGS, HEADERS, LIBS, INCLUDE all separate
 
-NAME		= fractal
+NAME		= fractol
 CFLAGS		= -Wall -Wextra -Werror -g -I include -I libft -I MLX42/include
 RM			= rm -rf # force recursive remove
 CC			= cc # compiler

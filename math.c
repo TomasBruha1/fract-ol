@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:15:11 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/04 17:25:25 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/05 19:39:04 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ double	divergent_value(t_complex z)
 {
 	double	result;
 	
+	result = z.real + z.i;
 	return (result);
 }
 
-t_complex	comp_squared(t_complex z1, t_complex z2)
+t_complex	complex_squared(t_complex z1, t_complex z2) // TODO
 {
 	t_complex   result;
 	

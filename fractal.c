@@ -6,17 +6,18 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/04 17:41:59 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/05 20:31:27 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// DO NOW: Fractal (Mandelbrot part) video by Oceano
+// DO NOW NOW: Fractal (Mandelbrot part) video by Oceano
+// DO NOW: add checks for init part for failing.
 
-// fractol struct and keep adding more if needed.
 // math_utils.c -> addition, squaring, escape value 4(Pythagoras)
 // Mandelbrot & Julia (different Julias with diff input values)
 // Mouse wheel zooms in & out almost infinitively.
 // Use diff colours for diff iterations of fractals.
+// Check and add descriptions for each function.
 // Window management must be smooth (disable it??)
 // ESC and "X" must exit smoothly.
 // MiniLibX(MLX42) use of images is necessary.
@@ -29,18 +30,24 @@
 // Make the color range shift (ask Zuzi).
 // Change number of iterations with a + -.
 
-// FUNCTIONs
-// mlx_init() - initializes the connection to MLX.
-// mlx_new_image() - creates a new blank image. // buffer probably
-// mlx_image_to_window() - It will put buffered image to a window.
-// mlx_loop_hook() - It will keep "open" function in an infinite loop.
-// mlx_is_key_down() - Do something if specific keyboard is pressed.
-// mlx_close_window() - It tells mlx to close the open window.
-// mlx_terminate() - Terminates MLX and cleans up any left used resourcel.
-// mlx_loop() - It will keep the window openn, infinite loop.
-// mlx_terminate() - It will terminate the mlx connection
 
 #include "include/fractal.h"
+
+void	rndr_fract(t_fractal *fract)
+{
+	t_complex zz;
+	zz.real = fract->z.real;
+}
+
+
+// init for MLX, events, hooks data TODO
+void	init_fract(t_fractal *fract)
+{
+	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, "fractol", true);
+	// malloc error msg TODO 3x
+	fract->image = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
+	mlx_image_to_window(fract->mlx_cnct, fract->image, 0, 0);
+}
 
 int	main(int argc, char **argv)
 {
@@ -64,6 +71,20 @@ int	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
+// FUNCTIONs
+// mlx_init() - initializes the connection to MLX.
+// mlx_new_image() - creates a new blank image. // buffer probably
+// mlx_image_to_window() - It will put buffered image to a window.
+// mlx_loop_hook() - It will keep "open" function in an infinite loop.
+// mlx_is_key_down() - Do something if specific keyboard is pressed.
+// mlx_close_window() - It tells mlx to close the open window.
+// mlx_terminate() - Terminates MLX and cleans up any left used resourcel.
+// mlx_loop() - It will keep the window openn, infinite loop.
+// mlx_terminate() - It will terminate the mlx connection
+
+// -----------------------------------------------------------------------
+
+// fractol struct and keep adding more if needed. // DONE
 // Calculate the math yourself -> z^2 + c -> almost // DONE
 // typedef struct for s_complex -> real and imaginary with doubles // DONE
 // Start up checks. // DONE
