@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/06 21:46:59 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/06 22:46:23 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,20 @@ void	pixel_mgmt(int x, int y, t_fractal *fract)
 	z.y = 0;
 	c.x = rescaling(x, 0, WIDTH, -2, 2);
 	c.y = rescaling(y, 0, HEIGHT, 2, -2);
-	fract->iter_count = 5;
 	while (i < fract->iter_count)
 	{
 		z = complex_add(complex_squared(z), c);
-		
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
 			// calculate color here and pass it to mlx_put_pixel.
-			color = PSYC_ELECTRIC_BLUE;
+			color = rescaling(i, 0, fract->iter_count, PSYC_NEON_GREEN, PSYC_LASER_YELLOW);
 			mlx_put_pixel(fract->img, x, y, color);
 			return ;
 		}
 		i++;
 	}
+	color = 0xFCFBF4FF;
+	mlx_put_pixel(fract->img, x, y, color);
 	// color of the pixels based on iteration
 	// while (z.x) * (z.x) + (z.y) * (z.y) < 4 do something...
 }

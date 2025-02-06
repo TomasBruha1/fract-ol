@@ -6,16 +6,16 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/06 21:11:31 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/06 22:46:36 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-// DO NOW NOW NOW NOW: WORKING PROTOTYPE!!! -> Check up to where it is working.
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
 // Check and add descriptions for each function.
+// Update "rescaling" and rm fifth argument.
 // Mandelbrot & Julia (different Julias with diff input values)
 // Mouse wheel zooms in & out almost infinitively.
 // Use diff colours for diff iterations of fractals.
@@ -37,6 +37,7 @@ void	ft_escape(mlx_key_data_t keydata, void *param)
 {
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
+		// Check which leaks are OK and which not with someone.
 		write(1, "ESCAPED\n", 8);
 		mlx_close_window(param);
 		mlx_terminate(param);
@@ -77,9 +78,11 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	fract.name = argv[1];
-	fract.iter_count = 5;
+	fract.iter_count = 100;
+	
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
+	
 	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
 	mlx_loop(fract.mlx_cnct);
@@ -100,6 +103,7 @@ int	main(int argc, char **argv)
 
 // -----------------------------------------------------------------------
 
+// WORKING PROTOTYPE of Mandelbrot!!! // DONE
 // DO NOW: add checks for init part for failing. // DONE
 // math_utils.c -> addition, squaring, escape value 4(Pythagoras) // DONE
 // fractol struct and keep adding more if needed. // DONE
