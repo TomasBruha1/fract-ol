@@ -6,7 +6,7 @@
 #    By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/23 15:34:26 by tbruha            #+#    #+#              #
-#    Updated: 2025/02/05 22:05:37 by tbruha           ###   ########.fr        #
+#    Updated: 2025/02/06 03:08:26 by tbruha           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC			= cc # compiler
 INCLUDE		= -L ./libft -lft ./MLX42/build/libmlx42.a -ldl -lglfw -pthread -lm # looks for *.a files
 MAKEFLAGS 	= --no-print-directory # silences "entering, leaving dir..."
 
-SRC		= 	fractal.c math.c utils.c #src/push_swap.c
+SRC		= 	fractal.c math.c utils.c rendering.c #src/push_swap.c
 
 OBJ		:=	$(SRC:%.c=%.o)
 
