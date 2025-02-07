@@ -6,12 +6,13 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 22:03:24 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/06 01:50:21 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:46:59 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractal.h"
+#include "fractol.h"
 
+// Error message when malloc goes berserk.
 void    error_msg_malloc()
 {
 	perror("malloc error\n");

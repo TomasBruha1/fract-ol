@@ -6,13 +6,14 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:15:11 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/06 20:56:47 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:46:39 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/fractal.h"
+#include "fractol.h"
 
-// Don't forget to cut the fifth parameter and init 0 in the function
+// !!!!! Don't forget to cut the fifth parameter and init 0 in the function !!!!!
+// Using linear interpolation getting new values aka mapping.
 double	rescaling(double nbr, double old_min, double old_max,
 double new_min, double new_max)
 {
@@ -22,6 +23,7 @@ double new_min, double new_max)
 	return (result);	
 }
 
+// Taking z and squaring it using real and imaginary part of the number.
 t_complex	complex_squared(t_complex z)
 {
 	double	temp_real;
@@ -32,6 +34,7 @@ t_complex	complex_squared(t_complex z)
 	return (z);
 }
 
+// Adding real parts and imaginary parts.
 t_complex	complex_add(t_complex z, t_complex c)
 {
 	t_complex	result;
