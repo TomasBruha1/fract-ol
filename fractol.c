@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/07 11:48:47 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:57:55 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 // Check all fts and correct them in *.h.
 // MiniLibX(MLX42) use of images is necessary. -> What does this mean??
 // Check for fractol vs fractal and make it right!!
+// How to deal with wrong inputs for Julia? Do I want to deal with it? Yes aI do.
+// Color mgmt, do % and add color depending on which # it ends?
 
 // BONUS:
 // More parameters from command line if needed.
@@ -34,8 +36,8 @@
 // Make the color range shift (ask Zuzi).
 // Change number of iterations with a + -. Due it via hooks in fract
 
-// hook to close after pressing ESC
-void	ft_escape(mlx_key_data_t keydata, void *param)
+// All key hooks, including hook to close after pressing ESC.
+void	keys_mgmt(mlx_key_data_t keydata, void *param)
 {
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
@@ -45,13 +47,33 @@ void	ft_escape(mlx_key_data_t keydata, void *param)
 		mlx_terminate(param);
 		exit(EXIT_SUCCESS);
 	}
+
+	// moving via shift UP. DOWN. LEFT. RIGHT   TODO
+
+	// increase and decrease iterations with '+' '-' TODO
+}
+
+void	scroll_mgmt(double xdelta, double ydelta, void *param)
+{
+	// code to add zoom in, rescaling the map again with the function. TODO
+	// How to rescale dynamically without the fifth parameter and added 0?
+	// function within the function to call the thing. What is the thing??
+}
+
+void	close_mgmt()
+{
+	// When you click krizek free everything and close it. Easy! TODO
 }
 
 // Here I will initialize all hooks
-void	init_hooks(t_fractal *fract)
+void	init_hooks_and_events(t_fractal *fract)
 {
-	mlx_key_hook(fract->mlx_cnct, &ft_escape, fract->mlx_cnct);
-	//	next hooks to implement here
+	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract->mlx_cnct);
+	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
+	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
+//	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
+//	mlx_hook() // What is it and how to use it? ->-> for the cursor zooming?
+//	mlx_mouse_hook() // Or maybe this one for the zooming bonus?
 }
 
 // init for MLX, events, hooks data TODO
@@ -64,7 +86,7 @@ void	init_fract(t_fractal *fract)
 	if (fract->img == NULL)
 		error_msg_malloc();
 
-	init_hooks(fract);
+	init_hooks_and_events(fract);
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
@@ -82,11 +104,13 @@ int	main(int argc, char **argv)
 	}
 	
 	fract.name = argv[1];
-	fract.iter_count = 250;
+	fract.iter_count = 80;
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
 	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
+
+//	mlx_loop_hook(fract.mlx_cnct,) What is this for?
 	mlx_loop(fract.mlx_cnct);
 	mlx_terminate(fract.mlx_cnct);
 	return (EXIT_SUCCESS);
@@ -100,7 +124,7 @@ int	main(int argc, char **argv)
 // mlx_is_key_down() - Do something if specific keyboard is pressed.
 // mlx_close_window() - It tells mlx to close the open window.
 // mlx_terminate() - Terminates MLX and cleans up any left used resourcel.
-// mlx_loop() - It will keep the window openn, infinite loop.
+// mlx_loop() - It will keep the window open, infinite loop.
 // mlx_terminate() - It will terminate the mlx connection
 
 // -----------------------------------------------------------------------
