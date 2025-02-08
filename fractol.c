@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 13:11:37 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:31:10 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // DO NOW NOW: Add hooks for arrow moving.
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
-//
+// Data init function: max_iter, old/new min/max, fract name, 
 // Update "rescaling" and rm fifth argument.
 // Mandelbrot & Julia (different Julias with diff input values)
 // Mouse wheel zooms in & out almost infinitively.
@@ -53,12 +53,27 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 	// increase and decrease iterations with '+' '-' TODO
 }
 
-// void	scroll_mgmt(double xdelta, double ydelta, void *param)
-// {
-// 	// code to add zoom in, rescaling the map again with the function. TODO
-// 	// How to rescale dynamically without the fifth parameter and added 0?
-// 	// function within the function to call the thing. What is the thing??
-// }
+// typedef void (*mlx_scrollfunc)(double xdelta, double ydelta, void* param);
+void	scroll_mgmt(double xdelta, double ydelta, void *param)
+{
+	t_fractal	*fract;
+	
+	(void)xdelta;
+	fract = param;
+	if (ydelta > 0)
+	{
+		write(1, "UP\n", 3);
+		// change shift.y to change map and zoom.
+	}	
+	else if (ydelta < 0)
+	{
+		write(1, "DOWN\n", 5);
+		// change shift.y to change map and zoom.
+	}	
+	
+	// code to add zoom in, rescaling the map again with the function. TODO
+	// How to rescale dynamically without the fifth parameter and added 0? struct
+}
 
 // void	close_mgmt()
 // {
@@ -69,7 +84,7 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 void	init_hooks_and_events(t_fractal *fract)
 {
 	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract->mlx_cnct);
-//	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
+	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
 //	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
 //	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
 //	mlx_hook() // What is it and how to use it? ->-> for the cursor zooming?
@@ -90,32 +105,20 @@ void	init_fract(t_fractal *fract)
 	init_hooks_and_events(fract);
 }
 
+// Nice hook function for moving, but useless.... Schade her profesor
 void	ft_move(void *param)
 {
-	//	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
 	t_fractal	*fract;
 
 	fract = param;
 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
-	{
 		fract->img->instances[0].y -= 3;
-		write(1, "UP pressed\n", 11);
-	}
 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
-	{
 		fract->img->instances[0].y += 3;
-		write(1, "DOWN pressed\n", 13);
-	}
 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
-	{
 		fract->img->instances[0].x -= 3;
-		write(1, "LEFT pressed\n", 13);
-	}
 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
-	{
 		fract->img->instances[0].x += 3;
-		write(1, "RIGHT pressed\n", 14);
-	}	
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
@@ -133,7 +136,7 @@ int	main(int argc, char **argv)
 	}
 	
 	fract.name = argv[1];
-	fract.iter_count = 80;
+	fract.iter_count = 60;
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
 	// Rendering of the image, adding pixels.
