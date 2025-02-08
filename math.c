@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:15:11 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 15:28:05 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:19:57 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 // !!!!! Don't forget to cut the fifth parameter and init 0 in the function !!!!!
 // Using linear interpolation getting new values aka mapping.
-double	map(double nbr, double old_min, double old_max,
-double new_min, double new_max)
+// NUMBER, OLD MIN, OLD MAX, NEW MIN, NEW MAX
+double	map(double nbr, t_limits old, t_limits new)
 {
 	double	result;
-//	int		zero;
-	result = ((new_max - new_min) * (nbr - old_min)	/ (old_max - old_min) + new_min);
+	
+	result = ((new.max - new.min) * (nbr - old.min)
+	/ (old.max - old.min) + new.min);
 	return (result);	
 }
 

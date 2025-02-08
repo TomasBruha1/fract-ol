@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 15:16:50 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/08 22:19:26 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ void	pixel_mgmt(int x, int y, t_fractal *fract)
 	i = 0;
 	z.x = 0;
 	z.y = 0;
-	c.x = map(x, 0, WIDTH, -2.5, 1.1);
-	c.y = map(y, 0, HEIGHT, 1.8, -1.8);
-	while (i < fract->iter_count)
+	c.x = (map(x, fract->map_x.old, fract->map_x.new) + fract->shift.x);
+	c.y = (map(y, fract->map_y.old, fract->map_y.new) + fract->shift.y);
+	while (i < fract->max_iter)
 	{
 		z = complex_add(complex_squared(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
-			color = map(i, 0, fract->iter_count, PSYC_LASER_YELLOW, MAGENTA);
-			if (i < 7)
+			color = map(i, fract->color.old, fract->color.new); // check math lib here
+			if (i < 2)
 				color = BLACK;
 			mlx_put_pixel(fract->img, x, y, color);
 			return ;
@@ -50,13 +50,15 @@ void    rndr_fract(t_fractal *fract)
 	int y;
 
 	y = 0;
-	while (y++ < WIDTH)
+	while (y < WIDTH)
 	{
 		x = 0;
-		while (x++ < HEIGHT)
+		while (x < HEIGHT)
 		{
 			pixel_mgmt(x, y, fract);
+			x++;
 		}
+		y++;
 	}
 	if (mlx_image_to_window(fract->mlx_cnct, fract->img, 0, 0) < 0)
 		perror("img to window failed\n");

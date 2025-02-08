@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 15:31:10 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/08 22:25:57 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 // DO NOW NOW: Add hooks for arrow moving.
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
+// BUGS: 
+// BUG: changing color brightness over arrow keys moving -> check after mlx_hook
+
 // Data init function: max_iter, old/new min/max, fract name, 
 // Update "rescaling" and rm fifth argument.
 // Mandelbrot & Julia (different Julias with diff input values)
 // Mouse wheel zooms in & out almost infinitively.
+// Maybe put secon img in the color of the outside iter if less/more than x iter.
 // Use diff colours for diff iterations of fractals.
 // Window management must be smooth, resizing etc.
 // ESC and "X" must exit smoothly.
@@ -39,15 +43,57 @@
 // All key hooks, including hook to close after pressing ESC.
 void	keys_mgmt(mlx_key_data_t keydata, void *param)
 {
+	t_fractal *fract = param;
+	
+	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+	{
+		fract->shift.y -= 0.35;
+		rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
+	{
+		fract->shift.y += 0.35;
+		rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+	{
+		fract->shift.x += 0.35;
+		rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+	{
+		fract->shift.x -= 0.35;
+		rndr_fract(fract);
+	}
+//	rndr_fract(fract);
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
 		// Check which leaks are OK and which not with someone.
 		write(1, "ESCAPED\n", 8);
-		mlx_close_window(param);
-		mlx_terminate(param);
+		mlx_close_window(fract->mlx_cnct);
+		mlx_terminate(fract->mlx_cnct);
 		exit(EXIT_SUCCESS);
 	}
-
+	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
+	// {
+	// 	fract->shift.y -= 0.2;
+	// 	rndr_fract(fract);
+	// }	
+	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
+	// {
+	// 	fract->shift.y += 0.2;
+	// 	rndr_fract(fract);
+	// }			
+	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
+	// {
+	// 	fract->shift.x += 0.2;
+	// 	rndr_fract(fract);
+	// }	
+	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
+	// {
+	// 	fract->shift.x -= 0.2;
+	// 	rndr_fract(fract);
+	// }	
 	// moving via shift UP. DOWN. LEFT. RIGHT   TODO
 
 	// increase and decrease iterations with '+' '-' TODO
@@ -83,7 +129,7 @@ void	scroll_mgmt(double xdelta, double ydelta, void *param)
 // Here I will initialize all hooks
 void	init_hooks_and_events(t_fractal *fract)
 {
-	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract->mlx_cnct);
+	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract);
 	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
 //	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
 //	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
@@ -106,19 +152,60 @@ void	init_fract(t_fractal *fract)
 }
 
 // Nice hook function for moving, but useless.... Schade her profesor
-void	ft_move(void *param)
-{
-	t_fractal	*fract;
+// void	ft_move(void *param)
+// {
+// 	t_fractal	*fract;
 
-	fract = param;
-	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
-		fract->img->instances[0].y -= 3;
-	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
-		fract->img->instances[0].y += 3;
-	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
-		fract->img->instances[0].x -= 3;
-	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
-		fract->img->instances[0].x += 3;
+// 	fract = param;
+// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
+// 	{
+// 		fract->shift.y -= 0.2;
+// 		rndr_fract(fract);
+// 	}	
+// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
+// 	{
+// 		fract->shift.y += 0.2;
+// 		rndr_fract(fract);
+// 	}			
+// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
+// 	{
+// 		fract->shift.x += 0.2;
+// 		rndr_fract(fract);
+// 	}	
+// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
+// 	{
+// 		fract->shift.x -= 0.2;
+// 		rndr_fract(fract);
+// 	}	
+	
+// }
+
+// Here I set values to all important stuff. Set up sub-functions.
+void	data_init(t_fractal *fract, char *argv)
+{
+	// set random stuff
+	fract->max_iter = 70;
+	fract->name = argv;
+	// set map_x/y
+	fract->map_x.old.min = 0;
+	fract->map_x.old.max = WIDTH;
+	fract->map_x.new.min = -2.5;
+	fract->map_x.new.max = 1.1;
+	fract->map_y.old.min = 0;
+	fract->map_y.old.max = HEIGHT;	
+	fract->map_y.new.min = 1.8;
+	fract->map_y.new.max = -1.8;
+	// set shift.x/y
+	fract->shift.x = 0.0;
+	fract->shift.y = 0.0;
+	// set color set 1
+	fract->color.old.min = 0;
+	fract->color.old.max = fract->max_iter;
+	fract->color.new.min = PSYC_LASER_YELLOW;
+	fract->color.new.max = MAGENTA;
+	
+
+	printf("%s\n", argv); // just a test and let's see
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
@@ -134,15 +221,14 @@ int	main(int argc, char **argv)
 			"\n     or\ttype \"Julia\", value 1 and value 2\n");
 		return (EXIT_FAILURE);
 	}
-	
-	fract.name = argv[1];
-	fract.iter_count = 60;
+	// initialize all the fract struct's data
+	data_init(&fract, argv[1]);
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
 	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
 
-	mlx_loop_hook(fract.mlx_cnct, ft_move, &fract);
+//	mlx_loop_hook(fract.mlx_cnct, ft_move, &fract); freeze
 	mlx_loop(fract.mlx_cnct);
 	mlx_terminate(fract.mlx_cnct);
 	return (EXIT_SUCCESS);
@@ -173,3 +259,8 @@ int	main(int argc, char **argv)
 // test case for MLX42, not working...
 // setup MLX42 correctly, MLX42.h and make and make clean // DONE
 // Have window on screen // DONE
+
+// BUGS FIXED
+
+// BUG: last x pixel is being rendered on the first position.
+// FIXED with changed pre/post incrementation. 
