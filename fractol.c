@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/07 17:57:55 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/08 13:11:37 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,28 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 	// increase and decrease iterations with '+' '-' TODO
 }
 
-void	scroll_mgmt(double xdelta, double ydelta, void *param)
-{
-	// code to add zoom in, rescaling the map again with the function. TODO
-	// How to rescale dynamically without the fifth parameter and added 0?
-	// function within the function to call the thing. What is the thing??
-}
+// void	scroll_mgmt(double xdelta, double ydelta, void *param)
+// {
+// 	// code to add zoom in, rescaling the map again with the function. TODO
+// 	// How to rescale dynamically without the fifth parameter and added 0?
+// 	// function within the function to call the thing. What is the thing??
+// }
 
-void	close_mgmt()
-{
-	// When you click krizek free everything and close it. Easy! TODO
-}
+// void	close_mgmt()
+// {
+// 	// When you click krizek free everything and close it. Easy! TODO
+// }
 
 // Here I will initialize all hooks
 void	init_hooks_and_events(t_fractal *fract)
 {
 	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract->mlx_cnct);
-	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
-	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
+//	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
+//	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
 //	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
 //	mlx_hook() // What is it and how to use it? ->-> for the cursor zooming?
 //	mlx_mouse_hook() // Or maybe this one for the zooming bonus?
+// 	hook for pressing/clicking to change between different color schemes.
 }
 
 // init for MLX, events, hooks data TODO
@@ -87,6 +88,34 @@ void	init_fract(t_fractal *fract)
 		error_msg_malloc();
 
 	init_hooks_and_events(fract);
+}
+
+void	ft_move(void *param)
+{
+	//	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+	t_fractal	*fract;
+
+	fract = param;
+	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
+	{
+		fract->img->instances[0].y -= 3;
+		write(1, "UP pressed\n", 11);
+	}
+	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
+	{
+		fract->img->instances[0].y += 3;
+		write(1, "DOWN pressed\n", 13);
+	}
+	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
+	{
+		fract->img->instances[0].x -= 3;
+		write(1, "LEFT pressed\n", 13);
+	}
+	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
+	{
+		fract->img->instances[0].x += 3;
+		write(1, "RIGHT pressed\n", 14);
+	}	
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
@@ -110,7 +139,7 @@ int	main(int argc, char **argv)
 	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
 
-//	mlx_loop_hook(fract.mlx_cnct,) What is this for?
+	mlx_loop_hook(fract.mlx_cnct, ft_move, &fract);
 	mlx_loop(fract.mlx_cnct);
 	mlx_terminate(fract.mlx_cnct);
 	return (EXIT_SUCCESS);
