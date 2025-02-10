@@ -6,30 +6,26 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 22:25:57 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:35:15 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-// DO NOW NOW: Add hooks for arrow moving.
+// DO NOW NOW: ESC and "X" must exit smoothly.
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
 // BUGS: 
-// BUG: changing color brightness over arrow keys moving -> check after mlx_hook
+// BUG: changing color brightness over any keys moving -> check after mlx_hook
 
-// Data init function: max_iter, old/new min/max, fract name, 
-// Update "rescaling" and rm fifth argument.
+// ESC and "X" must exit smoothly.
 // Mandelbrot & Julia (different Julias with diff input values)
 // Mouse wheel zooms in & out almost infinitively.
-// Maybe put secon img in the color of the outside iter if less/more than x iter.
 // Use diff colours for diff iterations of fractals.
 // Window management must be smooth, resizing etc.
-// ESC and "X" must exit smoothly.
 // Check all fts and correct them in *.h.
-// MiniLibX(MLX42) use of images is necessary. -> What does this mean??
 // Check for fractol vs fractal and make it right!!
-// How to deal with wrong inputs for Julia? Do I want to deal with it? Yes aI do.
+// How to deal with wrong inputs for Julia? Do I want to deal with it? Yes I do. Do I though?
 // Color mgmt, do % and add color depending on which # it ends?
 
 // BONUS:
@@ -45,27 +41,6 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 {
 	t_fractal *fract = param;
 	
-	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-	{
-		fract->shift.y -= 0.35;
-		rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-	{
-		fract->shift.y += 0.35;
-		rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	{
-		fract->shift.x += 0.35;
-		rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-	{
-		fract->shift.x -= 0.35;
-		rndr_fract(fract);
-	}
-//	rndr_fract(fract);
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
 		// Check which leaks are OK and which not with someone.
@@ -74,6 +49,31 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 		mlx_terminate(fract->mlx_cnct);
 		exit(EXIT_SUCCESS);
 	}
+	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
+	{
+		fract->shift.y -= 0.35;
+	//	rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
+	{
+		fract->shift.y += 0.35;
+	//	rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+	{
+		fract->shift.x += 0.35;
+	//	rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+	{
+		fract->shift.x -= 0.35;
+	//	rndr_fract(fract);
+	}
+	else if (keydata.key == MLX_KEY_KP_ADD && keydata.action == MLX_PRESS)
+		fract->max_iter += 10;
+	else if (keydata.key == MLX_KEY_KP_SUBTRACT && keydata.action == MLX_PRESS)
+		fract->max_iter -= 10;
+	rndr_fract(fract);
 	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
 	// {
 	// 	fract->shift.y -= 0.2;
@@ -94,7 +94,6 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 	// 	fract->shift.x -= 0.2;
 	// 	rndr_fract(fract);
 	// }	
-	// moving via shift UP. DOWN. LEFT. RIGHT   TODO
 
 	// increase and decrease iterations with '+' '-' TODO
 }
@@ -104,8 +103,8 @@ void	scroll_mgmt(double xdelta, double ydelta, void *param)
 {
 	t_fractal	*fract;
 	
-	(void)xdelta;
 	fract = param;
+	(void)xdelta;
 	if (ydelta > 0)
 	{
 		write(1, "UP\n", 3);
@@ -184,17 +183,17 @@ void	init_fract(t_fractal *fract)
 void	data_init(t_fractal *fract, char *argv)
 {
 	// set random stuff
-	fract->max_iter = 70;
+	fract->max_iter = 20;
 	fract->name = argv;
 	// set map_x/y
-	fract->map_x.old.min = 0;
-	fract->map_x.old.max = WIDTH;
-	fract->map_x.new.min = -2.5;
-	fract->map_x.new.max = 1.1;
-	fract->map_y.old.min = 0;
-	fract->map_y.old.max = HEIGHT;	
-	fract->map_y.new.min = 1.8;
-	fract->map_y.new.max = -1.8;
+	fract->map_x.old.min = 0;		// 0
+	fract->map_x.old.max = WIDTH;	// WIDTH
+	fract->map_x.new.min = -2.5;  	// -2.5
+	fract->map_x.new.max = 1.1;		// 1.1
+	fract->map_y.old.min = 0;		// 0
+	fract->map_y.old.max = HEIGHT;	// HEIGHT
+	fract->map_y.new.min = 1.8;		// 1.8
+	fract->map_y.new.max = -1.8;	// -1.8
 	// set shift.x/y
 	fract->shift.x = 0.0;
 	fract->shift.y = 0.0;
@@ -204,8 +203,7 @@ void	data_init(t_fractal *fract, char *argv)
 	fract->color.new.min = PSYC_LASER_YELLOW;
 	fract->color.new.max = MAGENTA;
 	
-
-	printf("%s\n", argv); // just a test and let's see
+	
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
@@ -247,6 +245,9 @@ int	main(int argc, char **argv)
 
 // -----------------------------------------------------------------------
 
+// Data init function: max_iter, old/new min/max, fract name.. // DONE
+// Update "rescaling" and rm fifth argument. // DONE
+// Add hooks for arrow moving. // DONE
 // WORKING PROTOTYPE of Mandelbrot!!! // DONE
 // DO NOW: add checks for init part for failing. // DONE
 // math_utils.c -> addition, squaring, escape value 4(Pythagoras) // DONE

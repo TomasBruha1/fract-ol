@@ -6,13 +6,12 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:15:11 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/08 20:19:57 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/10 16:33:46 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-// !!!!! Don't forget to cut the fifth parameter and init 0 in the function !!!!!
 // Using linear interpolation getting new values aka mapping.
 // NUMBER, OLD MIN, OLD MAX, NEW MIN, NEW MAX
 double	map(double nbr, t_limits old, t_limits new)
