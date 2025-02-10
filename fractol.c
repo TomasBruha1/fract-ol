@@ -6,11 +6,11 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/10 17:35:15 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/10 21:24:35 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "include/fractol.h"
 
 // DO NOW NOW: ESC and "X" must exit smoothly.
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
@@ -36,108 +36,47 @@
 // Make the color range shift (ask Zuzi).
 // Change number of iterations with a + -. Due it via hooks in fract
 
-// All key hooks, including hook to close after pressing ESC.
-void	keys_mgmt(mlx_key_data_t keydata, void *param)
-{
-	t_fractal *fract = param;
-	
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-	{
-		// Check which leaks are OK and which not with someone.
-		write(1, "ESCAPED\n", 8);
-		mlx_close_window(fract->mlx_cnct);
-		mlx_terminate(fract->mlx_cnct);
-		exit(EXIT_SUCCESS);
-	}
-	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-	{
-		fract->shift.y -= 0.35;
-	//	rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-	{
-		fract->shift.y += 0.35;
-	//	rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	{
-		fract->shift.x += 0.35;
-	//	rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-	{
-		fract->shift.x -= 0.35;
-	//	rndr_fract(fract);
-	}
-	else if (keydata.key == MLX_KEY_KP_ADD && keydata.action == MLX_PRESS)
-		fract->max_iter += 10;
-	else if (keydata.key == MLX_KEY_KP_SUBTRACT && keydata.action == MLX_PRESS)
-		fract->max_iter -= 10;
-	rndr_fract(fract);
-	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
-	// {
-	// 	fract->shift.y -= 0.2;
-	// 	rndr_fract(fract);
-	// }	
-	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
-	// {
-	// 	fract->shift.y += 0.2;
-	// 	rndr_fract(fract);
-	// }			
-	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
-	// {
-	// 	fract->shift.x += 0.2;
-	// 	rndr_fract(fract);
-	// }	
-	// if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
-	// {
-	// 	fract->shift.x -= 0.2;
-	// 	rndr_fract(fract);
-	// }	
-
-	// increase and decrease iterations with '+' '-' TODO
-}
-
-// typedef void (*mlx_scrollfunc)(double xdelta, double ydelta, void* param);
-void	scroll_mgmt(double xdelta, double ydelta, void *param)
-{
-	t_fractal	*fract;
-	
-	fract = param;
-	(void)xdelta;
-	if (ydelta > 0)
-	{
-		write(1, "UP\n", 3);
-		// change shift.y to change map and zoom.
-	}	
-	else if (ydelta < 0)
-	{
-		write(1, "DOWN\n", 5);
-		// change shift.y to change map and zoom.
-	}	
-	
-	// code to add zoom in, rescaling the map again with the function. TODO
-	// How to rescale dynamically without the fifth parameter and added 0? struct
-}
-
-// void	close_mgmt()
-// {
-// 	// When you click krizek free everything and close it. Easy! TODO
-// }
 
 // Here I will initialize all hooks
 void	init_hooks_and_events(t_fractal *fract)
 {
 	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract);
-	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract->mlx_cnct);
-//	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
+	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
+	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract);
 //	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
-//	mlx_hook() // What is it and how to use it? ->-> for the cursor zooming?
 //	mlx_mouse_hook() // Or maybe this one for the zooming bonus?
 // 	hook for pressing/clicking to change between different color schemes.
 }
 
-// init for MLX, events, hooks data TODO
+// Here I set values to all important stuff. Set up sub-functions.
+void	data_init(t_fractal *fract, char *argv)
+{
+	// set random stuff
+	fract->max_iter = 25;
+	fract->name = argv;
+	// set map_x/y
+	// old
+	fract->map_x.old.min = 0;		// 0
+	fract->map_x.old.max = WIDTH;	// WIDTH
+	fract->map_y.old.min = 0;		// 0
+	fract->map_y.old.max = HEIGHT;	// HEIGHT
+	// new base
+	fract->map_x.new.min = -2.5;  	// -2.5
+	fract->map_x.new.max = 1.1;		// 1.1
+	fract->map_y.new.min = 1.8;		// 1.8
+	fract->map_y.new.max = -1.8;	// -1.8
+	// zoom
+	// set shift.x/y
+	fract->shift.x = 0.0;
+	fract->shift.y = 0.0;
+	// set color set 1
+	fract->color.old.min = 0;
+	fract->color.old.max = fract->max_iter;
+	fract->color.new.min = BLACK;
+	fract->color.new.max = WHITE;
+}
+
+// init function for MLX, image, hooks.
 void	init_fract(t_fractal *fract)
 {
 	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, fract->name, false);
@@ -146,64 +85,7 @@ void	init_fract(t_fractal *fract)
 	fract->img = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
 	if (fract->img == NULL)
 		error_msg_malloc();
-
 	init_hooks_and_events(fract);
-}
-
-// Nice hook function for moving, but useless.... Schade her profesor
-// void	ft_move(void *param)
-// {
-// 	t_fractal	*fract;
-
-// 	fract = param;
-// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_UP))
-// 	{
-// 		fract->shift.y -= 0.2;
-// 		rndr_fract(fract);
-// 	}	
-// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_DOWN))
-// 	{
-// 		fract->shift.y += 0.2;
-// 		rndr_fract(fract);
-// 	}			
-// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_LEFT))
-// 	{
-// 		fract->shift.x += 0.2;
-// 		rndr_fract(fract);
-// 	}	
-// 	if (mlx_is_key_down(fract->mlx_cnct, MLX_KEY_RIGHT))
-// 	{
-// 		fract->shift.x -= 0.2;
-// 		rndr_fract(fract);
-// 	}	
-	
-// }
-
-// Here I set values to all important stuff. Set up sub-functions.
-void	data_init(t_fractal *fract, char *argv)
-{
-	// set random stuff
-	fract->max_iter = 20;
-	fract->name = argv;
-	// set map_x/y
-	fract->map_x.old.min = 0;		// 0
-	fract->map_x.old.max = WIDTH;	// WIDTH
-	fract->map_x.new.min = -2.5;  	// -2.5
-	fract->map_x.new.max = 1.1;		// 1.1
-	fract->map_y.old.min = 0;		// 0
-	fract->map_y.old.max = HEIGHT;	// HEIGHT
-	fract->map_y.new.min = 1.8;		// 1.8
-	fract->map_y.new.max = -1.8;	// -1.8
-	// set shift.x/y
-	fract->shift.x = 0.0;
-	fract->shift.y = 0.0;
-	// set color set 1
-	fract->color.old.min = 0;
-	fract->color.old.max = fract->max_iter;
-	fract->color.new.min = PSYC_LASER_YELLOW;
-	fract->color.new.max = MAGENTA;
-	
-	
 }
 
 // Check for correct arguments, fork to init, rndr and loop + clean at the end.
