@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 11:17:59 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:15:26 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	pixel_mgmt(int x, int y, t_fractal *fract)
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
 			color = map(i, fract->color.old, fract->color.new); // check math lib here
-			if (i < 2)
-				color = BLACK;
+			// if (i < 2)
+			// 	color = BLACK;
 			mlx_put_pixel(fract->img, x, y, color);
 			return ;
 		}

@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:44:40 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 11:34:06 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:53:00 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,32 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 		exit(EXIT_SUCCESS);
 	}
 	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-	{
 		fract->shift.y -= fract->zoom_y.old / 8;
-	//	rndr_fract(fract);
-	}
 	else if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-	{
 		fract->shift.y += fract->zoom_y.old / 8;
-	//	rndr_fract(fract);
-	}
 	else if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	{
 		fract->shift.x -= fract->zoom_x.old / 8;
-	//	rndr_fract(fract);
-	}
 	else if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-	{
 		fract->shift.x += fract->zoom_x.old / 8;
-	//	rndr_fract(fract);
-	}
 	else if (keydata.key == MLX_KEY_KP_ADD && keydata.action == MLX_PRESS)
 		fract->max_iter += 7;
 	else if (keydata.key == MLX_KEY_KP_SUBTRACT && keydata.action == MLX_PRESS)
 		fract->max_iter -= 7;
+	if (keydata.key == MLX_KEY_KP_1 && keydata.action == MLX_PRESS)
+	{
+		fract->color.new.min = BLACK;
+		fract->color.new.max = WHITE;
+	}
+	if (keydata.key == MLX_KEY_KP_2 && keydata.action == MLX_PRESS)
+	{
+		fract->color.new.min = MEDIUM_BLUE;
+		fract->color.new.max = MAGENTA;
+	}
+	if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
+	{
+		fract->color.new.min = PURPLE;
+		fract->color.new.max = PSYC_NEON_CYAN;
+	}
 	rndr_fract(fract);
 }
 
@@ -63,20 +66,10 @@ void	scroll_mgmt(double xdelta, double ydelta, void *param)
 
 	fract = param;
 	(void)xdelta;
-//	(void)ydelta;
-//	(void)fract;
 	if (ydelta > 0)
-	{
-		write(1, "UP\n", 3);
 		zoom = 0.80;
-	}
 	if (ydelta < 0)
-	{
-		write(1, "DOWN\n", 5);
 		zoom = 1.20;
-	}
-	// else
-	// 	zoom = 1.0;
 	// calculate x
 	fract->zoom_x.center = (fract->map_x.new.min + fract->map_x.new.max) / 2;
 	fract->zoom_x.old = fract->map_x.new.max - fract->map_x.new.min;

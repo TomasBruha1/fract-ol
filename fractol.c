@@ -6,22 +6,19 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 11:29:09 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 13:52:20 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fractol.h"
 
-// DO NOW NOW: ESC and "X" must exit smoothly.
+// DO NOW NOW: Check subject and do 
 // DO NOW: Fractal (Mandelbrot part) video by Oceano
 
 // BUGS: 
 // BUG: changing color brightness over any keys moving -> check after mlx_hook
 
-// ESC and "X" must exit smoothly.
 // Mandelbrot & Julia (different Julias with diff input values)
-// Mouse wheel zooms in & out almost infinitively.
-// Use diff colours for diff iterations of fractals.
 // Window management must be smooth, resizing etc.
 // Check all fts and correct them in *.h.
 // Check for fractol vs fractal and make it right!!
@@ -32,7 +29,6 @@
 // More parameters from command line if needed.
 // Extra fractal (third)
 // Zoom follows the cursor (hook to center on cursor's position?)
-// Moving the view by pressing arrow keys. (similar to test "test")
 // Make the color range shift (ask Zuzi).
 // Change number of iterations with a + -. Due it via hooks in fract
 
@@ -52,7 +48,7 @@ void	init_hooks_and_events(t_fractal *fract)
 void	data_init(t_fractal *fract, char *argv)
 {
 	// set random stuff
-	fract->max_iter = 25;
+	fract->max_iter = 30; // 30
 	fract->name = argv;
 	// set map_x/y
 	// old
@@ -75,11 +71,11 @@ void	data_init(t_fractal *fract, char *argv)
 	// set shift.x/y
 	fract->shift.x = 0.0;
 	fract->shift.y = 0.0;
-	// set color set 1
+	// color set 1
 	fract->color.old.min = 0;
 	fract->color.old.max = fract->max_iter;
 	fract->color.new.min = BLACK;
-	fract->color.new.max = WHITE;
+	fract->color.new.max = WHITE;	
 }
 
 // init function for MLX, image, hooks.
@@ -133,6 +129,10 @@ int	main(int argc, char **argv)
 
 // -----------------------------------------------------------------------
 
+// 3 different color sets. // DONE
+// Mouse wheel zooms in & out almost infinitively. // DONE
+// Use diff colours for diff iterations of fractals. // DONE
+// ESC and "X" must exit smoothly. // DONE
 // Data init function: max_iter, old/new min/max, fract name.. // DONE
 // Update "rescaling" and rm fifth argument. // DONE
 // Add hooks for arrow moving. // DONE
