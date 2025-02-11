@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/10 21:24:35 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:29:09 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ void	data_init(t_fractal *fract, char *argv)
 	fract->map_y.new.min = 1.8;		// 1.8
 	fract->map_y.new.max = -1.8;	// -1.8
 	// zoom
+	fract->zoom_x.center = 0;
+	fract->zoom_x.old = fract->map_x.new.max - fract->map_x.new.min;
+	fract->zoom_x.new = 0;
+	fract->zoom_y.center = 0;
+	fract->zoom_y.old = fract->map_y.new.max - fract->map_y.new.min;
+	fract->zoom_y.new = 0;
 	// set shift.x/y
 	fract->shift.x = 0.0;
 	fract->shift.y = 0.0;
