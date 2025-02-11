@@ -6,31 +6,24 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 19:52:46 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 20:50:04 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fractol.h"
 
-// DO NOW NOW: Check subject and do 
-// DO NOW: Fractal (Mandelbrot part) video by Oceano
-
-// BUGS: 
-// BUG: changing color brightness over any keys moving -> check after mlx_hook
+// DO NOW NOW: Fractal (Mandelbrot part) video by Oceano
+// DO NOW: Julia fractal and divide the math for Mandelbrot
 
 // Mandelbrot & Julia (different Julias with diff input values)
 // Window management must be smooth, resizing etc. -> mlx_
 // Check all fts and correct them in *.h.
 // Check for fractol vs fractal and make it right!!
 // How to deal with wrong inputs for Julia? Do I want to deal with it? Yes I do. Do I though?
-// Color mgmt, do % and add color depending on which # it ends?
 
 // BONUS:
 // More parameters from command line if needed.
 // Extra fractal (third)
-// Zoom follows the cursor (hook to center on cursor's position?)
-// Make the color range shift (ask Zuzi).
-// Change number of iterations with a + -. Due it via hooks in fract
 
 
 // Here I will initialize all hooks
@@ -72,7 +65,7 @@ void	data_init(t_fractal *fract, char *argv)
 	fract->shift.y = 0.0;
 	// mouse position
 	fract->mouse.x = 0;
-	fract->mouse.y = 0;-
+	fract->mouse.y = 0;
 	// color set 1
 	fract->color.old.min = 0;
 	fract->color.old.max = fract->max_iter;
@@ -131,6 +124,9 @@ int	main(int argc, char **argv)
 
 // -----------------------------------------------------------------------
 
+// Change number of iterations with a + -. Due it via hooks in fract // DONE
+// Zoom follows the cursor (hook to center on cursor's position?) // DONE
+// Make the color range shift (ask Zuzi). // DONE
 // 3 different color sets. // DONE
 // Mouse wheel zooms in & out almost infinitively. // DONE
 // Use diff colours for diff iterations of fractals. // DONE
@@ -150,8 +146,3 @@ int	main(int argc, char **argv)
 // test case for MLX42, not working...
 // setup MLX42 correctly, MLX42.h and make and make clean // DONE
 // Have window on screen // DONE
-
-// BUGS FIXED
-
-// BUG: last x pixel is being rendered on the first position.
-// FIXED with changed pre/post incrementation. 
