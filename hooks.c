@@ -6,13 +6,11 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:44:40 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 13:53:00 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/11 20:01:54 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fractol.h"
-
-
 
 // All key hooks, including hook to close after pressing ESC.
 void	keys_mgmt(mlx_key_data_t keydata, void *param)
@@ -21,7 +19,6 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 	
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 	{
-		// Check which leaks are OK and which not with someone.
 		write(1, "ESCAPED\n", 8);
 		mlx_close_window(fract->mlx_cnct);
 		mlx_delete_image(fract->mlx_cnct, fract->img);
@@ -47,13 +44,13 @@ void	keys_mgmt(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_KP_2 && keydata.action == MLX_PRESS)
 	{
-		fract->color.new.min = MEDIUM_BLUE;
+		fract->color.new.min = YELLOW;
 		fract->color.new.max = MAGENTA;
 	}
 	if (keydata.key == MLX_KEY_KP_3 && keydata.action == MLX_PRESS)
 	{
-		fract->color.new.min = PURPLE;
-		fract->color.new.max = PSYC_NEON_CYAN;
+		fract->color.new.min = PSYC_SHOCKING_LIME;
+		fract->color.new.max = PSYC_LASER_YELLOW;
 	}
 	rndr_fract(fract);
 }
@@ -70,15 +67,19 @@ void	scroll_mgmt(double xdelta, double ydelta, void *param)
 		zoom = 0.80;
 	if (ydelta < 0)
 		zoom = 1.20;
+	// fract->mouse.x is a pointer and # from 0 to 800.
+	mlx_get_mouse_pos(fract->mlx_cnct, &fract->mouse.x, &fract->mouse.y);
+	fract->zoom_x.center = map(fract->mouse.x, fract->map_x.old, fract->map_x.new); // mouse X
+	fract->zoom_y.center = map(fract->mouse.y, fract->map_y.old, fract->map_y.new); // mouse Y
 	// calculate x
-	fract->zoom_x.center = (fract->map_x.new.min + fract->map_x.new.max) / 2;
+//	fract->zoom_x.center = (fract->map_x.new.min + fract->map_x.new.max) / 2;
 	fract->zoom_x.old = fract->map_x.new.max - fract->map_x.new.min;
 	fract->zoom_x.new = fract->zoom_x.old * zoom;
 	// set new x
 	fract->map_x.new.min = fract->zoom_x.center - fract->zoom_x.new / 2;
 	fract->map_x.new.max = fract->zoom_x.center + fract->zoom_x.new / 2;
 	// calculate y
-	fract->zoom_y.center = (fract->map_y.new.min + fract->map_y.new.max) / 2;
+//	fract->zoom_y.center = (fract->map_y.new.min + fract->map_y.new.max) / 2;
 	fract->zoom_y.old = fract->map_y.new.max - fract->map_y.new.min;
 	fract->zoom_y.new = fract->zoom_y.old * zoom;
 	// set new y
