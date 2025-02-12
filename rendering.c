@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 16:03:17 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 16:30:11 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void    rndr_fract(t_fractal *fract)
 	int y;
 
 	y = 0;
-	printf("%s\n", fract->name);
 	while (y < WIDTH)
 	{
 		x = 0;

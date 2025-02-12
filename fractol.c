@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 15:07:35 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 16:29:33 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 // DO NOW: Julia fractal and divide the math for Mandelbrot
 
 // Mandelbrot & Julia (different Julias with diff input values)
-// Window management must be smooth, resizing etc. -> mlx_
+// Window management must be smooth, resizing etc. -> mlx_resize_hook.
 // Check all fts and correct them in *.h.
 // Check for fractol vs fractal and make it right!!
 // How to deal with wrong inputs for Julia? Do I want to deal with it? Yes I do. Do I though?
 
 // BONUS:
 // More parameters from command line if needed.
+// Play with different color sets. Leave it for now.
 // Extra fractal (third)
 
 
