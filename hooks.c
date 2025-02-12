@@ -6,22 +6,22 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:44:40 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 21:53:03 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 23:35:35 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fractol.h"
 
-// void	resize_mgmt(int32_t width, int32_t height, void* param)
-// {
-// 	t_fractal *fract;
+void	resize_mgmt(int32_t width, int32_t height, void* param)
+{
+	t_fractal *fract;
 
-// 	fract = param;
-// 	fract->img = mlx_new_image(fract->mlx_cnct, width, HEIGHT);
-// 	fract->map_x.old.max = width;	// WIDTH
-// 	fract->map_y.old.max = height;	// HEIGHT
-// 	rndr_fract(fract);
-// }
+	fract = param;
+	fract->side_x = width;
+	fract->side_y = height;
+	fract->img = mlx_new_image(fract->mlx_cnct, (uint32_t)width, (uint32_t)height);
+	rndr_fract(fract);
+}
 
 void	color_and_iter(mlx_key_data_t keydata, t_fractal *fract)
 {
@@ -107,8 +107,7 @@ void	close_mgmt(void *param)
 {
 	t_fractal	*fract;
 
-	fract = NULL;
-	fract->mlx_cnct = param;
+	fract = param;
 	write(1, "BYE fractal\n", 12);
 	mlx_close_window(fract->mlx_cnct);
 	mlx_delete_image(fract->mlx_cnct, fract->img);

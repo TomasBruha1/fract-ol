@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 22:03:45 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 23:37:58 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	calc_mandel(int x, int y, t_fractal *fract)
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
 			color = map(i, fract->color.old, fract->color.new);
-			if (i < 2)
+			if (i < 0)
 				color = BLACK;
 			mlx_put_pixel(fract->img, x, y, color);
 			return ;
@@ -81,10 +81,10 @@ void	rndr_fract(t_fractal *fract)
 	int	y;
 
 	y = 0;
-	while (y < WIDTH)
+	while (y < fract->side_y)
 	{
 		x = 0;
-		while (x < HEIGHT)
+		while (x < fract->side_x)
 		{
 			if (ft_strncmp(fract->name, "Mandelbrot", 11) == 0)
 				calc_mandel(x, y, fract);
