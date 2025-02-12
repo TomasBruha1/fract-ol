@@ -6,26 +6,19 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 17:10:53 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 22:18:11 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fractol.h"
 
-// DO NOW NOW: Fractal (Mandelbrot part) video by Oceano
-// DO NOW: Julia fractal and divide the math for Mandelbrot
-
-// Mandelbrot & Julia (different Julias with diff input values)
-// Window management must be smooth, resizing etc. -> mlx_resize_hook.
 // Check all fts and correct them in *.h.
 // Check for fractol vs fractal and make it right!!
-// How to deal with wrong inputs for Julia? Do I want to deal with it? Yes I do. Do I though?
+// How to deal with wrong inputs for Julia?
 
 // BONUS:
-// More parameters from command line if needed.
 // Play with different color sets. Leave it for now.
 // Extra fractal (third)
-
 
 // Here I will initialize all hooks
 void	init_hooks_and_events(t_fractal *fract)
@@ -33,54 +26,61 @@ void	init_hooks_and_events(t_fractal *fract)
 	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract);
 	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
 	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract);
+//	mlx_resize_hook(fract->mlx_cnct, &resize_mgmt, fract);
+}
+
+// Setting up special data for particular sets
+void	set_sets(t_fractal *fract, char **argv)
+{
+	if (ft_strncmp(fract->name, "Mandelbrot", 11) == 0)
+	{
+		fract->map_x.new.min = -2.5;
+		fract->map_x.new.max = 1.1;
+		fract->map_y.new.min = 1.8;
+		fract->map_y.new.max = -1.8;
+		fract->max_iter = 25;
+	}
+	else if (ft_strncmp(fract->name, "Julia", 6) == 0)
+	{
+		fract->julia = ft_atoi(argv[2]);
+		fract->map_x.new.min = -1.6;
+		fract->map_x.new.max = 1.6;
+		fract->map_y.new.min = 1.6;
+		fract->map_y.new.max = -1.6;
+		fract->max_iter = 50;
+		set_julias(fract);
+	}
 }
 
 // Here I set values to all important stuff. Set up sub-functions.
 void	data_init(t_fractal *fract, char **argv)
 {
-	// set random stuff
-	fract->max_iter = 25; // 30
 	fract->name = argv[1];
-	if (ft_strncmp(fract->name, "Julia", 6) == 0)
-	{
-		fract->julia.x = ft_atoi(argv[2]);
-		fract->julia.y = ft_atoi(argv[3]);
-	}
-	// set map_x/y
-	// old
-	fract->map_x.old.min = 0;		// 0
-	fract->map_x.old.max = WIDTH;	// WIDTH
-	fract->map_y.old.min = 0;		// 0
-	fract->map_y.old.max = HEIGHT;	// HEIGHT
-	// new base
-	fract->map_x.new.min = -2.5;  	// -2.5
-	fract->map_x.new.max = 1.1;		// 1.1
-	fract->map_y.new.min = 1.8;		// 1.8
-	fract->map_y.new.max = -1.8;	// -1.8
-	// zoom
-	fract->zoom_x.center = -0.7;	// -0.7
+	set_sets(fract, argv);
+	fract->map_x.old.min = 0;
+	fract->map_x.old.max = WIDTH;
+	fract->map_y.old.min = 0;
+	fract->map_y.old.max = HEIGHT;
+	fract->zoom_x.center = -0.7;
 	fract->zoom_x.old = fract->map_x.new.max - fract->map_x.new.min;
 	fract->zoom_x.new = 0;
-	fract->zoom_y.center = 0;		// 0.0
+	fract->zoom_y.center = 0;
 	fract->zoom_y.old = fract->map_y.new.max - fract->map_y.new.min;
 	fract->zoom_y.new = 0;
-	// set shift.x/y
 	fract->shift.x = 0.0;
 	fract->shift.y = 0.0;
-	// mouse position
 	fract->mouse.x = 0;
 	fract->mouse.y = 0;
-	// color set 1
 	fract->color.old.min = 0;
 	fract->color.old.max = fract->max_iter;
 	fract->color.new.min = BLACK;
-	fract->color.new.max = WHITE;	
+	fract->color.new.max = WHITE;
 }
 
 // init function for MLX, image, hooks.
 void	init_fract(t_fractal *fract)
 {
-	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, fract->name, true);
+	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, fract->name, false);
 	if (fract->mlx_cnct == NULL)
 		error_msg_malloc();
 	fract->img = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
@@ -94,35 +94,20 @@ int	main(int argc, char **argv)
 {
 	t_fractal	fract;
 
-	// checks for correct arguments
 	if (!((argc == 2 && ft_strncmp(argv[1], "Mandelbrot", 11) == 0)
-			|| (argc == 4 && ft_strncmp(argv[1], "Julia", 6) == 0)))
+			|| (argc == 3 && ft_strncmp(argv[1], "Julia", 6) == 0)))
 	{
 		ft_printf("incorrect argument(s)\n\ttype \"Mandelbrot\""
-			"\n     or\ttype \"Julia\", value 1 and value 2\n");
+			"\n     or\ttype \"Julia\" and a nbr (1-5)\n");
 		return (EXIT_FAILURE);
 	}
-	// initialize all the fract struct's data
-	data_init(&fract, argv); // maybe just argv and separate them there?
-	// initialization	 of the MLX and the image stuff
+	data_init(&fract, argv);
 	init_fract(&fract);
-	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
 	mlx_loop(fract.mlx_cnct);
 	mlx_terminate(fract.mlx_cnct);
 	return (EXIT_SUCCESS);
 }
-
-// FUNCTIONs
-// mlx_init() - initializes the connection to MLX.
-// mlx_new_image() - creates a new blank image. // buffer probably
-// mlx_image_to_window() - It will put buffered image to a window.
-// mlx_loop_hook() - It will keep "open" function in an infinite loop.
-// mlx_is_key_down() - Do something if specific keyboard is pressed.
-// mlx_close_window() - It tells mlx to close the open window.
-// mlx_terminate() - Terminates MLX and cleans up any left used resourcel.
-// mlx_loop() - It will keep the window open, infinite loop.
-// mlx_terminate() - It will terminate the mlx connection
 
 // -----------------------------------------------------------------------
 

@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:15:11 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/10 16:33:46 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 21:58:49 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 double	map(double nbr, t_limits old, t_limits new)
 {
 	double	result;
-	
+
 	result = ((new.max - new.min) * (nbr - old.min)
-	/ (old.max - old.min) + new.min);
-	return (result);	
+			/ (old.max - old.min) + new.min);
+	return (result);
 }
 
 // Taking z and squaring it using real and imaginary part of the number.
