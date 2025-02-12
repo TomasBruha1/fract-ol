@@ -6,15 +6,16 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 13:15:26 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 16:03:17 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
+// FUTURE calc_mandel / calc_julia / calc_ship
 // map the image to new x y values, counting iterations count
 // adding colours to pixels based on diverging and from radius of 2.
-void	pixel_mgmt(int x, int y, t_fractal *fract)
+void	calc_mandel(int x, int y, t_fractal *fract)
 {
 	t_complex	z;
 	t_complex	c;
@@ -22,16 +23,16 @@ void	pixel_mgmt(int x, int y, t_fractal *fract)
 	uint32_t	color;
 
 	i = 0;
-	z.x = 0;
-	z.y = 0;
-	c.x = map(x, fract->map_x.old, fract->map_x.new) + fract->shift.x; // multiply
-	c.y = map(y, fract->map_y.old, fract->map_y.new) + fract->shift.y; // multiply
+	z.x = 0; 	// x passed
+	z.y = 0;	// y passed
+	c.x = map(x, fract->map_x.old, fract->map_x.new) + fract->shift.x;
+	c.y = map(y, fract->map_y.old, fract->map_y.new) + fract->shift.y;
 	while (i < fract->max_iter)
 	{
 		z = complex_add(complex_squared(z), c);
 		if ((z.x * z.x) + (z.y * z.y) > 4)
 		{
-			color = map(i, fract->color.old, fract->color.new); // check math lib here
+			color = map(i, fract->color.old, fract->color.new); // math lib
 			// if (i < 2)
 			// 	color = BLACK;
 			mlx_put_pixel(fract->img, x, y, color);
@@ -42,6 +43,7 @@ void	pixel_mgmt(int x, int y, t_fractal *fract)
 	mlx_put_pixel(fract->img, x, y, WHITE);
 }
 
+// Separate Mandelbor/Julia/ship here.
 // Iteration through the whole img and handling pixels in pixel_mgmt.
 // Putting img to window when everything is done.
 void    rndr_fract(t_fractal *fract)
@@ -50,12 +52,13 @@ void    rndr_fract(t_fractal *fract)
 	int y;
 
 	y = 0;
+	printf("%s\n", fract->name);
 	while (y < WIDTH)
 	{
 		x = 0;
 		while (x < HEIGHT)
 		{
-			pixel_mgmt(x, y, fract);
+			calc_mandel(x, y, fract);
 			x++;
 		}
 		y++;

@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/11 20:50:04 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 15:07:35 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	init_hooks_and_events(t_fractal *fract)
 	mlx_key_hook(fract->mlx_cnct, &keys_mgmt, fract);
 	mlx_close_hook(fract->mlx_cnct, &close_mgmt, fract->mlx_cnct);
 	mlx_scroll_hook(fract->mlx_cnct, &scroll_mgmt, fract);
-//	mlx_cursor_hook(fract->mlx_cnct, &cursor_mgmt, fract->mlx_cnct); // for bonus zooming
-// 	hook for pressing/clicking to change between different color schemes.
 }
 
 // Here I set values to all important stuff. Set up sub-functions.
@@ -76,7 +74,7 @@ void	data_init(t_fractal *fract, char *argv)
 // init function for MLX, image, hooks.
 void	init_fract(t_fractal *fract)
 {
-	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, fract->name, false);
+	fract->mlx_cnct = mlx_init(WIDTH, HEIGHT, fract->name, true);
 	if (fract->mlx_cnct == NULL)
 		error_msg_malloc();
 	fract->img = mlx_new_image(fract->mlx_cnct, WIDTH, HEIGHT);
@@ -99,13 +97,11 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	// initialize all the fract struct's data
-	data_init(&fract, argv[1]);
+	data_init(&fract, argv[1]); // maybe just argv and separate them there?
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
 	// Rendering of the image, adding pixels.
 	rndr_fract(&fract);
-
-//	mlx_loop_hook(fract.mlx_cnct, ft_move, &fract); freeze
 	mlx_loop(fract.mlx_cnct);
 	mlx_terminate(fract.mlx_cnct);
 	return (EXIT_SUCCESS);
