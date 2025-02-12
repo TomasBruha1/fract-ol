@@ -6,11 +6,40 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 03:02:22 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 16:30:11 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 17:32:06 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+void	calc_julia(int x, int y, t_fractal *fract)
+{
+	t_complex	z;
+	t_complex	c;
+	int			i;
+	uint32_t	color;
+	
+	i = 0;
+	z.x = map(x, fract->map_x.old, fract->map_x.new) + fract->shift.x; // shift here or not
+	z.y = map(y, fract->map_y.old, fract->map_y.new) + fract->shift.y;
+	c.x = 0.5;	// fract->julia.x // MANUALLY 0.5 NOW		// maybe put shift here?
+	c.y = 0.5;	// fract->julia.y // MANUALLY 0.5 NOW
+	while (i < fract->max_iter)
+	{
+		z = complex_add(complex_squared(z), c);
+		if ((z.x * z.x) + (z.y * z.y) > 4)
+		{
+			color = map(i, fract->color.old, fract->color.new); // math lib
+			// if (i < 2)
+			// 	color = BLACK;
+			mlx_put_pixel(fract->img, x, y, color);
+			return ;
+		}
+		i++;
+	}
+	mlx_put_pixel(fract->img, x, y, WHITE);
+
+}
 
 // FUTURE calc_mandel / calc_julia / calc_ship
 // map the image to new x y values, counting iterations count
@@ -57,7 +86,12 @@ void    rndr_fract(t_fractal *fract)
 		x = 0;
 		while (x < HEIGHT)
 		{
-			calc_mandel(x, y, fract);
+			if (ft_strncmp(fract->name, "Mandelbrot", 11) == 0)
+				calc_mandel(x, y, fract);
+			else if (ft_strncmp(fract->name, "Julia", 6) == 0)
+			{
+				calc_julia(x, y, fract);
+			}
 			x++;
 		}
 		y++;

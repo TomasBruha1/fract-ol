@@ -6,7 +6,7 @@
 /*   By: tbruha <tbruha@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 14:21:27 by tbruha            #+#    #+#             */
-/*   Updated: 2025/02/12 16:29:33 by tbruha           ###   ########.fr       */
+/*   Updated: 2025/02/12 17:10:53 by tbruha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ void	init_hooks_and_events(t_fractal *fract)
 }
 
 // Here I set values to all important stuff. Set up sub-functions.
-void	data_init(t_fractal *fract, char *argv)
+void	data_init(t_fractal *fract, char **argv)
 {
 	// set random stuff
 	fract->max_iter = 25; // 30
-	fract->name = argv;
+	fract->name = argv[1];
+	if (ft_strncmp(fract->name, "Julia", 6) == 0)
+	{
+		fract->julia.x = ft_atoi(argv[2]);
+		fract->julia.y = ft_atoi(argv[3]);
+	}
 	// set map_x/y
 	// old
 	fract->map_x.old.min = 0;		// 0
@@ -98,7 +103,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	// initialize all the fract struct's data
-	data_init(&fract, argv[1]); // maybe just argv and separate them there?
+	data_init(&fract, argv); // maybe just argv and separate them there?
 	// initialization	 of the MLX and the image stuff
 	init_fract(&fract);
 	// Rendering of the image, adding pixels.
